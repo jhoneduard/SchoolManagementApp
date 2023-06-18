@@ -5724,7 +5724,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5735,11 +5734,12 @@ __webpack_require__.r(__webpack_exports__);
       tipoAccion: 0,
       arrayUsuarios: [],
       arrayCategoriaUsuarios: [],
-      criterio: "id",
+      criterio: "identification",
       buscar: "",
       errores: [],
       usuario: {
         id: 0,
+        identification: 0,
         document_type: '',
         names: '',
         surnames: '',
@@ -5879,6 +5879,7 @@ __webpack_require__.r(__webpack_exports__);
                   this.tituloModal = "Crear Usuario";
                   this.tipoAccion = 1;
                   this.usuario.id = 0;
+                  this.usuario.identification = 0;
                   this.usuario.document_type = '';
                   this.usuario.names = '';
                   this.usuario.surnames = '';
@@ -5895,6 +5896,7 @@ __webpack_require__.r(__webpack_exports__);
                   this.tituloModal = "Actualizar Usuario";
                   this.tipoAccion = 2;
                   this.usuario.id = data["id"];
+                  this.usuario.identification = data["identification"];
                   this.usuario.document_type = data["document_type"];
                   this.usuario.names = data["names"];
                   this.usuario.surnames = data["surnames"];
@@ -5925,6 +5927,7 @@ __webpack_require__.r(__webpack_exports__);
       this.tituloModal = "";
       this.errores = [];
       this.usuario.id = 0;
+      this.usuario.identification = 0;
       this.usuario.document_type = '';
       this.usuario.names = '';
       this.usuario.surnames = '';
@@ -5938,7 +5941,7 @@ __webpack_require__.r(__webpack_exports__);
     registrarUsuario: function registrarUsuario() {
       var me = this;
       axios.post("/registerUser", {
-        id: this.usuario.id,
+        identification: this.usuario.identification,
         document_type: this.usuario.document_type,
         names: this.usuario.names,
         surnames: this.usuario.surnames,
@@ -33600,8 +33603,8 @@ var render = function () {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.usuario.id,
-                                  expression: "usuario.id",
+                                  value: _vm.usuario.identification,
+                                  expression: "usuario.identification",
                                 },
                               ],
                               staticClass: "form-control",
@@ -33610,7 +33613,7 @@ var render = function () {
                                 autocomplete: "off",
                                 disabled: _vm.tipoAccion == 2,
                               },
-                              domProps: { value: _vm.usuario.id },
+                              domProps: { value: _vm.usuario.identification },
                               on: {
                                 input: function ($event) {
                                   if ($event.target.composing) {
@@ -33618,7 +33621,7 @@ var render = function () {
                                   }
                                   _vm.$set(
                                     _vm.usuario,
-                                    "id",
+                                    "identification",
                                     $event.target.value
                                   )
                                 },
@@ -33627,12 +33630,12 @@ var render = function () {
                           ]
                         ),
                         _vm._v(" "),
-                        _vm.errores.id
+                        _vm.errores.identification
                           ? _c("span", { staticClass: "text-danger" }, [
                               _c("i", { staticClass: "fas fa-info-circle" }),
                               _vm._v(
                                 "\n                                    " +
-                                  _vm._s(_vm.errores.id[0])
+                                  _vm._s(_vm.errores.identification[0])
                               ),
                             ])
                           : _vm._e(),
@@ -34015,7 +34018,7 @@ var render = function () {
                     },
                   },
                   [
-                    _c("option", { attrs: { value: "users.id" } }, [
+                    _c("option", { attrs: { value: "users.identification" } }, [
                       _vm._v("Identificacion"),
                     ]),
                     _vm._v(" "),
@@ -34099,7 +34102,9 @@ var render = function () {
               "tbody",
               _vm._l(_vm.arrayUsuarios, function (usuario) {
                 return _c("tr", { key: usuario.id }, [
-                  _c("td", { domProps: { textContent: _vm._s(usuario.id) } }),
+                  _c("td", {
+                    domProps: { textContent: _vm._s(usuario.identification) },
+                  }),
                   _vm._v(" "),
                   _c("td", {
                     domProps: { textContent: _vm._s(usuario.document_type) },
