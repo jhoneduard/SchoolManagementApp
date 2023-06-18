@@ -21,14 +21,14 @@ class UsuarioController extends Controller
 
         if ($buscar == '') {
             $usuarios =  DB::table('users')
-                ->select('users.id', 'users.document_type', 'users.names', 'users.surnames', 'users.email', 'users.status', 'users.id_category', 'users.phone', 'category_user.name AS nombreCategoria', 'users.id_category AS idCategoria')
+                ->select('users.id','users.identification', 'users.document_type', 'users.names', 'users.surnames', 'users.email', 'users.status', 'users.id_category', 'users.phone', 'category_user.name AS nombreCategoria', 'users.id_category AS idCategoria')
                 ->join('category_user', 'category_user.id', '=', 'users.id_category')
                 ->where('users.id', '!=', auth()->id())
                 ->orderBy('users.id', 'desc')
                 ->paginate(3);
         } else {
             $usuarios =  DB::table('users')
-                ->select('users.id', 'users.document_type', 'users.names', 'users.surnames', 'users.email', 'users.status', 'users.id_category', 'users.phone', 'category_user.name AS nombreCategoria', 'users.id_category AS idCategoria')
+                ->select('users.id','users.identification', 'users.document_type', 'users.names', 'users.surnames', 'users.email', 'users.status', 'users.id_category', 'users.phone', 'category_user.name AS nombreCategoria', 'users.id_category AS idCategoria')
                 ->join('category_user', 'category_user.id', '=', 'users.id_category')
                 ->orderBy('users.id', 'desc')
                 ->where($criterio, 'like', '%' . $buscar . '%')
@@ -60,7 +60,7 @@ class UsuarioController extends Controller
     public function registerUser(CreateUserRequest $request)
     {
         $user = new User();
-        $user->id = $request->id;
+        $user->identification = $request->identification;
         $user->document_type = $request->document_type;
         $user->names = $request->names;
         $user->surnames = $request->surnames;

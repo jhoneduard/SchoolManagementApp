@@ -41,12 +41,12 @@ class UpdateUserRequest extends FormRequest
             // names
             'names.required' => 'El nombre es requerido',
             'names.min' => 'El nombre debe tener como minimo 3 caracteres',
-            'names.max' => 'El nombre debe tener como maximo 30 caracteres',
+            'names.max' => 'El nombre debe tener como maximo 50 caracteres',
 
             // surnames
             'surnames.required' => 'El apellido es requerido',
             'surnames.min' => 'El apellido debe tener como minimo 3 caracteres',
-            'surnames.max' => 'El apellido debe tener como maximo 30 caracteres',
+            'surnames.max' => 'El apellido debe tener como maximo 50 caracteres',
 
             // phone
             'phone.required' => 'El telefono es requerido',

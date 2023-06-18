@@ -49,7 +49,7 @@
                             </div>
                             <!--END ROW 1 (document_type)-->
 
-                            <!--Row 2 (id, names)-->
+                            <!--Row 2 (identification, names)-->
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>Identificacion</label>
@@ -57,12 +57,12 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                                         </div>
-                                        <input type="number" class="form-control" v-model="usuario.id" autocomplete="off"
+                                        <input type="number" class="form-control" v-model="usuario.identification" autocomplete="off"
                                             :disabled="tipoAccion == 2" />
                                     </div>
-                                    <span v-if="errores.id" class="text-danger">
+                                    <span v-if="errores.identification" class="text-danger">
                                         <i class="fas fa-info-circle"></i>
-                                        {{ errores.id[0] }}</span>
+                                        {{ errores.identification[0] }}</span>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Nombres</label>
@@ -78,7 +78,7 @@
                                         {{ errores.names[0] }}</span>
                                 </div>
                             </div>
-                            <!--END ROW 2 (id, names)-->
+                            <!--END ROW 2 (identification, names)-->
 
                             <!-- ROW 3 (surnames y phone)-->
                             <div class="row">
@@ -179,7 +179,7 @@
                         <div class="col-md-6">
                             <div class="input-group">
                                 <select class="form-control col-md-3" v-model="criterio">
-                                    <option value="users.id">Identificacion</option>
+                                    <option value="users.identification">Identificacion</option>
                                     <option value="users.names">
                                         Nombres
                                     </option>
@@ -197,8 +197,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- END Card Body-->
-
+                <!-- END Card Body-->   
                 <!--- Tabla-->
                 <div class="table-responsive">
                     <table class="table">
@@ -219,7 +218,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="usuario in arrayUsuarios" :key="usuario.id">
-                                <td v-text="usuario.id"></td>
+                                <td v-text="usuario.identification"></td>
                                 <td v-text="usuario.document_type"></td>
                                 <td v-text="usuario.names"></td>
                                 <td v-text="usuario.surnames"></td>
@@ -304,11 +303,12 @@ export default {
             tipoAccion: 0,
             arrayUsuarios: [],
             arrayCategoriaUsuarios: [],
-            criterio: "id",
+            criterio: "identification",
             buscar: "",
             errores: [],
             usuario: {
                 id: 0,
+                identification: 0,
                 document_type: '',
                 names: '',
                 surnames: '',
@@ -477,6 +477,7 @@ export default {
                             this.tituloModal = "Crear Usuario";
                             this.tipoAccion = 1;
                             this.usuario.id = 0;
+                            this.usuario.identification = 0;
                             this.usuario.document_type = '';
                             this.usuario.names = '';
                             this.usuario.surnames = '';
@@ -493,6 +494,7 @@ export default {
                             this.tituloModal = "Actualizar Usuario";
                             this.tipoAccion = 2;
                             this.usuario.id = data["id"];
+                            this.usuario.identification = data["identification"];
                             this.usuario.document_type = data["document_type"];
                             this.usuario.names = data["names"];
                             this.usuario.surnames = data["surnames"];
@@ -526,6 +528,7 @@ export default {
             this.tituloModal = "";
             this.errores = [];
             this.usuario.id = 0;
+            this.usuario.identification = 0;
             this.usuario.document_type = '';
             this.usuario.names = '';
             this.usuario.surnames = '';
@@ -540,7 +543,7 @@ export default {
             let me = this;
             axios
                 .post("/registerUser", {
-                    id: this.usuario.id,
+                    identification: this.usuario.identification,
                     document_type: this.usuario.document_type,
                     names: this.usuario.names,
                     surnames: this.usuario.surnames,

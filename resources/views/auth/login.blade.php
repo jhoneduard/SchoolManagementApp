@@ -26,7 +26,7 @@
                         <img src="{{ asset('img/userStudent.png')}} " />
                     </div>
 
-                    <form method="POST" action="{{ route('login') }}" class="col-12">
+                    <form method="post" action="{{ route('login') }}" class="col-12">
                         @csrf
                         <h5 class="text-white">Login</h5>
 
