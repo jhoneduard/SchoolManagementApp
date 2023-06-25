@@ -5233,6 +5233,83 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -5242,13 +5319,21 @@ __webpack_require__.r(__webpack_exports__);
       tituloModal: "",
       tipoAccion: 0,
       arrayAsignaturas: [],
-      criterio: "id",
+      arrayDocentes: [],
+      arrayCategory: [],
+      criterio: "subjects.name",
       buscar: "",
       errores: [],
       asignatura: {
         id: 0,
         name: '',
-        description: ''
+        description: '',
+        numberStudents: 0,
+        state: '',
+        idTeacher: 0,
+        idCategory: 0,
+        initDate: '',
+        endDate: ''
       },
       pagination: {
         total: 0,
@@ -5344,9 +5429,18 @@ __webpack_require__.r(__webpack_exports__);
                   this.modal = 1;
                   this.tituloModal = "Crear Asignatura";
                   this.tipoAccion = 1;
+                  // Campos del objeto asignatura
                   this.asignatura.id = 0;
                   this.asignatura.name = '';
                   this.asignatura.description = '';
+                  this.asignatura.numberStudents = 0;
+                  this.asignatura.state = '';
+                  this.asignatura.idTeacher = 0;
+                  this.asignatura.idCategory = '';
+                  this.asignatura.initDate = null;
+                  this.asignatura.endDate = null;
+                  this.arrayDocentes = [];
+                  this.arrayCategory = [];
                   break;
                 }
               case "actualizar":
@@ -5354,14 +5448,23 @@ __webpack_require__.r(__webpack_exports__);
                   this.modal = 1;
                   this.tituloModal = "Actualizar Asignatura";
                   this.tipoAccion = 2;
+                  // Campos del objeto asignatura
                   this.asignatura.id = data["id"];
                   this.asignatura.name = data["name"];
                   this.asignatura.description = data["description"];
+                  this.asignatura.numberStudents = data["numberStudents"];
+                  this.asignatura.state = data["state"];
+                  this.asignatura.idTeacher = data["idTeacher"];
+                  this.asignatura.idCategory = data["idCategory"];
+                  this.asignatura.initDate = data["initDate"];
+                  this.asignatura.endDate = data["endDate"];
                   break;
                 }
             }
           }
       }
+      this.selectTeachers();
+      this.selectCategory();
     },
     cerrarModal: function cerrarModal() {
       this.modal = 0;
@@ -5376,9 +5479,12 @@ __webpack_require__.r(__webpack_exports__);
     registrarAsignatura: function registrarAsignatura() {
       var me = this;
       axios.post("/registerSubject", {
-        id: this.asignatura.id,
         name: this.asignatura.name,
-        description: this.asignatura.description
+        description: this.asignatura.description,
+        id_teacher: this.asignatura.idTeacher,
+        id_category_subject: this.asignatura.idCategory,
+        initial_date: this.asignatura.initDate,
+        end_date: this.asignatura.endDate
       }).then(function (response) {
         sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire("Señor usuario la asignatura fue exitosamente registrada!", "Asignatura exitosamente registrada", 'success');
         me.cerrarModal();
@@ -5407,6 +5513,28 @@ __webpack_require__.r(__webpack_exports__);
           me.errores = error.response.data.errors;
           sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire("Señor usuario verifique que el formulario este correctamente diligenciado!", "Error al actualizar la asignatura", "error");
         }
+      });
+    },
+    selectTeachers: function selectTeachers() {
+      var me = this;
+      var url = '/select-teachers';
+      axios.get(url).then(function (response) {
+        //console.log(response);
+        var respuesta = response.data;
+        me.arrayDocentes = respuesta.teachers;
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    selectCategory: function selectCategory() {
+      var me = this;
+      var url = '/select-category-subjects';
+      axios.get(url).then(function (response) {
+        //console.log(response);
+        var respuesta = response.data;
+        me.arrayCategory = respuesta.categorias;
+      })["catch"](function (error) {
+        console.log(error);
       });
     }
   },
@@ -33046,7 +33174,7 @@ var render = function () {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "form-group col-md-6" }, [
-                        _c("label", [_vm._v("Descripcion")]),
+                        _c("label", [_vm._v("Docentes")]),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -33054,6 +33182,230 @@ var render = function () {
                           [
                             _vm._m(2),
                             _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.asignatura.idTeacher,
+                                    expression: "asignatura.idTeacher",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                attrs: { disabled: _vm.tipoAccion == 2 },
+                                on: {
+                                  change: function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.asignatura,
+                                      "idTeacher",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  },
+                                },
+                              },
+                              _vm._l(_vm.arrayDocentes, function (teacher) {
+                                return _c("option", {
+                                  key: teacher.id,
+                                  domProps: {
+                                    value: teacher.id,
+                                    textContent: _vm._s(teacher.names),
+                                  },
+                                })
+                              }),
+                              0
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm.errores.id_teacher
+                          ? _c("span", { staticClass: "text-danger" }, [
+                              _c("i", { staticClass: "fas fa-info-circle" }),
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(_vm.errores.id_teacher[0])
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("label", [_vm._v("Categoria")]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "input-group has-validation" },
+                          [
+                            _vm._m(3),
+                            _vm._v(" "),
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.asignatura.idCategory,
+                                    expression: "asignatura.idCategory",
+                                  },
+                                ],
+                                staticClass: "form-control",
+                                attrs: { disabled: _vm.tipoAccion == 2 },
+                                on: {
+                                  change: function ($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call(
+                                        $event.target.options,
+                                        function (o) {
+                                          return o.selected
+                                        }
+                                      )
+                                      .map(function (o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.asignatura,
+                                      "idCategory",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  },
+                                },
+                              },
+                              _vm._l(_vm.arrayCategory, function (category) {
+                                return _c("option", {
+                                  key: category.id,
+                                  domProps: {
+                                    value: category.id,
+                                    textContent: _vm._s(category.name),
+                                  },
+                                })
+                              }),
+                              0
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm.errores.id_category_subject
+                          ? _c("span", { staticClass: "text-danger" }, [
+                              _c("i", { staticClass: "fas fa-info-circle" }),
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(_vm.errores.id_category_subject[0])
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("label", [_vm._v("Fecha Inicial")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.asignatura.initDate,
+                              expression: "asignatura.initDate",
+                            },
+                          ],
+                          staticClass: "swal2-input form-control",
+                          attrs: { type: "date", id: "date" },
+                          domProps: { value: _vm.asignatura.initDate },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.asignatura,
+                                "initDate",
+                                $event.target.value
+                              )
+                            },
+                          },
+                        }),
+                        _vm._v(" "),
+                        _vm.errores.initial_date
+                          ? _c("span", { staticClass: "text-danger" }, [
+                              _c("i", { staticClass: "fas fa-info-circle" }),
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(_vm.errores.initial_date[0])
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("label", [_vm._v("Fecha Final")]),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.asignatura.endDate,
+                              expression: "asignatura.endDate",
+                            },
+                          ],
+                          staticClass: "swal2-input form-control",
+                          attrs: { type: "date", id: "date" },
+                          domProps: { value: _vm.asignatura.endDate },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.asignatura,
+                                "endDate",
+                                $event.target.value
+                              )
+                            },
+                          },
+                        }),
+                        _vm._v(" "),
+                        _vm.errores.end_date
+                          ? _c("span", { staticClass: "text-danger" }, [
+                              _c("i", { staticClass: "fas fa-info-circle" }),
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(_vm.errores.end_date[0])
+                              ),
+                            ])
+                          : _vm._e(),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "form-group col-md-6" }, [
+                        _c("label", [_vm._v("Descripcion")]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "input-group has-validation" },
+                          [
                             _c("textarea", {
                               directives: [
                                 {
@@ -33161,7 +33513,7 @@ var render = function () {
     _vm._v(" "),
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-8" }, [
-        _vm._m(3),
+        _vm._m(4),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "form-group row" }, [
@@ -33190,7 +33542,11 @@ var render = function () {
                       ) {
                         return null
                       }
-                      return _vm.listarAsignaturas(1, _vm.buscar, "name")
+                      return _vm.listarAsignaturas(
+                        1,
+                        _vm.buscar,
+                        "subjects.name"
+                      )
                     },
                     input: function ($event) {
                       if ($event.target.composing) {
@@ -33208,7 +33564,11 @@ var render = function () {
                     attrs: { type: "submit" },
                     on: {
                       click: function ($event) {
-                        return _vm.listarAsignaturas(1, _vm.buscar, "name")
+                        return _vm.listarAsignaturas(
+                          1,
+                          _vm.buscar,
+                          "subjects.name"
+                        )
                       },
                     },
                   },
@@ -33224,7 +33584,7 @@ var render = function () {
         _vm._v(" "),
         _c("div", { staticClass: "table-responsive" }, [
           _c("table", { staticClass: "table" }, [
-            _vm._m(4),
+            _vm._m(5),
             _vm._v(" "),
             _c(
               "tbody",
@@ -33236,6 +33596,42 @@ var render = function () {
                   _vm._v(" "),
                   _c("td", {
                     domProps: { textContent: _vm._s(asignatura.description) },
+                  }),
+                  _vm._v(" "),
+                  _c("td", {
+                    domProps: {
+                      textContent: _vm._s(asignatura.numberStudents),
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("td", {
+                    domProps: { textContent: _vm._s(asignatura.state) },
+                  }),
+                  _vm._v(" "),
+                  _c("td", {
+                    domProps: { textContent: _vm._s(asignatura.idTeacher) },
+                  }),
+                  _vm._v(" "),
+                  _c("td", {
+                    domProps: { textContent: _vm._s(asignatura.nameTeacher) },
+                  }),
+                  _vm._v(" "),
+                  _c("td", {
+                    domProps: {
+                      textContent: _vm._s(asignatura.surnamesTeacher),
+                    },
+                  }),
+                  _vm._v(" "),
+                  _c("td", {
+                    domProps: { textContent: _vm._s(asignatura.nameCategory) },
+                  }),
+                  _vm._v(" "),
+                  _c("td", {
+                    domProps: { textContent: _vm._s(asignatura.initDate) },
+                  }),
+                  _vm._v(" "),
+                  _c("td", {
+                    domProps: { textContent: _vm._s(asignatura.endDate) },
                   }),
                   _vm._v(" "),
                   _c("td", [
@@ -33397,10 +33793,20 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", { staticClass: "input-group-text" }, [
+        _c("i", { staticClass: "fas fa-id-card" }),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card" }, [
       _c("div", { staticClass: "card-header bg-primary text-white" }, [
         _c("i", { staticClass: "fas fa-users" }),
-        _vm._v(" Asignaturas"),
+        _vm._v(" Cursos"),
       ]),
     ])
   },
@@ -33413,6 +33819,26 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Nombre")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Descripcion")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [
+          _vm._v("Numero de Estudiantes"),
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Estado")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [
+          _vm._v("Identificacion Docente"),
+        ]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Nombre Docente")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Apellido Docente")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Categoria")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Fecha Inicial")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Fecha Final")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Opciones")]),
       ]),

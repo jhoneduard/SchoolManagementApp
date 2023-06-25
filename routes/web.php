@@ -39,3 +39,9 @@ Route::get('/subjects', [AsignaturaController::class, 'geSubjects']);
 Route::post('/registerSubject', [AsignaturaController::class, 'registerSubject']);
 Route::delete('subject/{id}', [AsignaturaController::class, 'destroy']);
 Route::put('/subject/update', [AsignaturaController::class, 'updateSubject']);
+
+// API de categoria de listar Docentes
+Route::get('/select-teachers', [AsignaturaController::class, 'getTeachers']);
+
+// API de categoria de Categorias de Cursos
+Route::get('/select-category-subjects', [AsignaturaController::class, 'getCategory']);
