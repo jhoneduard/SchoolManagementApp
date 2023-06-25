@@ -395,9 +395,8 @@ export default {
                             this.asignatura.id = data["id"];
                             this.asignatura.name = data["name"];
                             this.asignatura.description = data["description"];
-                            this.asignatura.numberStudents =  data["numberStudents"];
-                            this.asignatura.state =  data["state"];
-                            this.asignatura.idTeacher =  data["idTeacher"];
+                            this.asignatura.id_teacher =  data["idTeacher"];
+                            console.log(data);
                             this.asignatura.idCategory = data["idCategory"];
                             this.asignatura.initDate = data["initDate"];
                             this.asignatura.endDate =  data["endDate"];
