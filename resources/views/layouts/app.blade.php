@@ -46,7 +46,7 @@
                         </li>
 
                         <li @click="menu=2" class="nav-item active">
-                            <a class="nav-link text-white" href="#"> <i class="fa fa-book"></i></i>Asignaturas</a>
+                            <a class="nav-link text-white" href="#"> <i class="fa fa-book"></i></i>Cursos</a>
                         </li>
                         @endif
                         @endif

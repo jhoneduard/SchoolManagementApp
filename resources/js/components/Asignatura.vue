@@ -17,7 +17,8 @@
                     </div>
                     <div class="modal-body">
                         <form action="" method="post" class="form-horizontal">
-                            <!--Row 1 (id, name)-->
+
+                            <!--Row 1 (nombre, docente)-->
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>Nombre</label>
@@ -32,12 +33,72 @@
                                         <i class="fas fa-info-circle"></i>
                                         {{ errores.name[0] }}</span>
                                 </div>
+
                                 <div class="form-group col-md-6">
-                                    <label>Descripcion</label>
+                                    <label>Docentes</label>
                                     <div class="input-group has-validation">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                                         </div>
+                                        <select class="form-control" v-model="asignatura.idTeacher"
+                                            :disabled="tipoAccion == 2">
+                                            <option v-for="teacher in arrayDocentes" :key="teacher.id"
+                                                :value="teacher.id" v-text="teacher.names">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <span v-if="errores.id_teacher" class="text-danger">
+                                        <i class="fas fa-info-circle"></i>
+                                        {{ errores.id_teacher[0] }}</span>
+                                </div>
+
+                            </div>
+                            <!--END ROW  (id, Docente)-->
+
+                            <!--Row 1 (Categoria, FechaInicial)-->
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Categoria</label>
+                                    <div class="input-group has-validation">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                        </div>
+                                        <select class="form-control" v-model="asignatura.idCategory"
+                                            :disabled="tipoAccion == 2">
+                                            <option v-for="category in arrayCategory" :key="category.id"
+                                                :value="category.id" v-text="category.name">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <span v-if="errores.id_category_subject" class="text-danger">
+                                        <i class="fas fa-info-circle"></i>
+                                        {{ errores.id_category_subject[0] }}</span>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label>Fecha Inicial</label>
+                                    <input type="date" id="date" class="swal2-input form-control"  v-model="asignatura.initDate">
+                                    <span v-if="errores.initial_date" class="text-danger">
+                                        <i class="fas fa-info-circle"></i>
+                                        {{ errores.initial_date[0] }}</span>
+                                </div>
+                            </div>
+                            <!--END ROW (Categoria, FechaInicial) -->
+                            
+
+                            <!-- ROW  (Fecha Final, Descripcion)-->
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Fecha Final</label>
+                                    <input type="date" id="date" class="swal2-input form-control"  v-model="asignatura.endDate">
+                                    <span v-if="errores.end_date" class="text-danger">
+                                        <i class="fas fa-info-circle"></i>
+                                        {{ errores.end_date[0] }}</span>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label>Descripcion</label>
+                                    <div class="input-group has-validation">
                                         <textarea class="form-control" rows="3" v-model="asignatura.description"></textarea>
                                     </div>
                                     <span v-if="errores.description" class="text-danger">
@@ -45,7 +106,7 @@
                                         {{ errores.description[0] }}</span>
                                 </div>
                             </div>
-                            <!--END ROW  (id, name)-->
+                        <!-- END  ROW  (Fecha Final, Descripcion)-->
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -70,7 +131,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header bg-primary text-white"><i class="fas fa-users"></i> Asignaturas</div>
+                    <div class="card-header bg-primary text-white"><i class="fas fa-users"></i> Cursos</div>
                 </div>
                 <!-- Card Body-->
                 <div class="card-body">
@@ -96,6 +157,13 @@
                             <tr>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Descripcion</th>
+                                <th scope="col">Numero de Estudiantes</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Identificacion Docente</th>
+                                <th scope="col">Nombre Docente</th>
+                                <th scope="col">Categoria</th>
+                                <th scope="col">Fecha Inicial</th>
+                                <th scope="col">Fecha Final</th>
                                 <th scope="col">Opciones</th>
                             </tr>
                         </thead>
@@ -103,6 +171,13 @@
                             <tr v-for="asignatura in arrayAsignaturas" :key="asignatura.id">
                                 <td v-text="asignatura.name"></td>
                                 <td v-text="asignatura.description"></td>
+                                <td v-text="asignatura.numberStudents"></td>
+                                <td v-text="asignatura.state"></td>
+                                <td v-text="asignatura.idTeacher"></td>
+                                <td v-text="asignatura.nameTeacher"></td>
+                                <td v-text="asignatura.nameCategory"></td>
+                                <td v-text="asignatura.initDate"></td>
+                                <td v-text="asignatura.endDate"></td>
                                 <td>
                                     <button type="button" @click="
                                         abrirModal('asignatura', 'actualizar', asignatura)
@@ -164,13 +239,21 @@ export default {
             tituloModal: "",
             tipoAccion: 0,
             arrayAsignaturas: [],
+            arrayDocentes : [],
+            arrayCategory : [],
             criterio: "id",
             buscar: "",
             errores: [],
             asignatura: {
                 id: 0,
                 name: '',
-                description: ''
+                description: '',
+                numberStudents : 0,
+                state : '',
+                idTeacher : 0,
+                idCategory : 0,
+                initDate : '',
+                endDate : ''
             },
             pagination: {
                 total: 0,
@@ -287,9 +370,18 @@ export default {
                             this.modal = 1;
                             this.tituloModal = "Crear Asignatura";
                             this.tipoAccion = 1;
+                            // Campos del objeto asignatura
                             this.asignatura.id = 0;
                             this.asignatura.name = '';
                             this.asignatura.description = '';
+                            this.asignatura.numberStudents = 0;
+                            this.asignatura.state = '';
+                            this.asignatura.idTeacher = 0;
+                            this.asignatura.idCategory = '';
+                            this.asignatura.initDate = null;
+                            this.asignatura.endDate = null;
+                            this.arrayDocentes = [];
+                            this.arrayCategory = [];
                             break;
                         }
 
@@ -297,14 +389,23 @@ export default {
                             this.modal = 1;
                             this.tituloModal = "Actualizar Asignatura";
                             this.tipoAccion = 2;
+                            // Campos del objeto asignatura
                             this.asignatura.id = data["id"];
                             this.asignatura.name = data["name"];
                             this.asignatura.description = data["description"];
+                            this.asignatura.numberStudents =  data["numberStudents"];
+                            this.asignatura.state =  data["state"];
+                            this.asignatura.idTeacher =  data["idTeacher"];
+                            this.asignatura.idCategory = data["idCategory"];
+                            this.asignatura.initDate = data["initDate"];
+                            this.asignatura.endDate =  data["endDate"];
                             break;
                         }
                     }
                 }
             }
+            this.selectTeachers();
+            this.selectCategory();
         },
         cerrarModal() {
             this.modal = 0;
@@ -373,6 +474,34 @@ export default {
                         );
                     }
                 });
+        },
+        selectTeachers(){
+            let me = this;
+            var url = '/select-teachers';
+            axios
+                .get(url)
+                .then(function (response) {
+                    //console.log(response);
+                    var respuesta = response.data;
+                    me.arrayDocentes = respuesta.teachers;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        selectCategory(){
+            let me = this;
+            var url = '/select-category-subjects';
+            axios
+                .get(url)
+                .then(function (response) {
+                    //console.log(response);
+                    var respuesta = response.data;
+                    me.arrayCategory = respuesta.categorias;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });  
         }
     },
     mounted() {
