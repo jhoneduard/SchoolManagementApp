@@ -19,15 +19,19 @@ class AsignaturaController extends Controller
 
         if ($buscar == '') {
             $asignaturas =  DB::table('subjects')
-                ->select('id', 'name', 'description')
-                ->orderBy('id', 'desc')
+                ->select('subjects.id', 'subjects.name', 'subjects.description','subjects.number_registered AS numberStudents','subjects.status AS state','subjects.initial_date AS initDate','end_date AS endDate', 'users.identification AS idTeacher', 'users.names AS nameTeacher', 'users.surnames AS surnamesTeacher','category_subject.name AS nameCategory','category_subject.id AS idCategory')
+                ->join('users', 'users.id', '=', 'subjects.id_teacher')
+                ->join('category_subject', 'category_subject.id', '=', 'subjects.id_category_subject')
+                ->orderBy('subjects.id', 'desc')
                 ->paginate(3);
         } else {
             $asignaturas =  DB::table('subjects')
-                ->select('id', 'name', 'description')
-                ->orderBy('id', 'desc')
-                ->where($criterio, 'like', '%' . $buscar . '%')
-                ->paginate(3);
+            ->select('subjects.id', 'subjects.name', 'subjects.description','subjects.number_registered AS numberStudents','subjects.status AS state','subjects.initial_date AS initDate','end_date AS endDate', 'users.identification AS idTeacher', 'users.names AS nameTeacher', 'users.surnames AS surnamesTeacher','category_subject.name AS nameCategory','category_subject.id AS idCategory')
+            ->join('users', 'users.id', '=', 'subjects.id_teacher')
+            ->join('category_subject', 'category_subject.id', '=', 'subjects.id_category_subject')
+            ->orderBy('subjects.id', 'desc')
+            ->where($criterio, 'like', '%' . $buscar . '%')
+            ->paginate(3);
         }
         return [
             'pagination' => [
@@ -49,6 +53,12 @@ class AsignaturaController extends Controller
         $subject = new Subject();
         $subject->name = $request->name;
         $subject->description = $request->description;
+        $subject->number_registered = 0;
+        $subject->status = 'Disponible';
+        $subject->id_teacher = $request->id_teacher;
+        $subject->id_category_subject = $request->id_category_subject;
+        $subject->initial_date = $request->initial_date;
+        $subject->end_date = $request->end_date;
         $subject->save();
     }
 
@@ -66,4 +76,24 @@ class AsignaturaController extends Controller
         $subject = Subject::find($id);
         $subject->delete();
     }
+
+    public function getTeachers(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $teachers = DB::table('users')
+            ->select('id', DB::raw("CONCAT(names,' ',surnames) AS names"))
+            ->where('id_category', '=', 3)
+            ->get();
+        return ['teachers' => $teachers];
+    }
+
+    public function getCategory(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+        $categorias = DB::table('category_subject')
+            ->select('id', 'name')
+            ->get();
+        return ['categorias' => $categorias];
+    }
+
 }

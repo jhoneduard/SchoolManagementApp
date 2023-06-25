@@ -139,9 +139,9 @@
                         <div class="col-md-6">
                             <div class="input-group">
                                 <input type="text" v-model="buscar" @keyup.enter="
-                                    listarAsignaturas(1, buscar, 'name')
+                                    listarAsignaturas(1, buscar, 'subjects.name')
                                 " class="form-control" placeholder="Ingrese el nombre de la asignatura" />
-                                <button type="submit" @click="listarAsignaturas(1, buscar, 'name')" class="btn btn-primary">
+                                <button type="submit" @click="listarAsignaturas(1, buscar, 'subjects.name')" class="btn btn-primary">
                                     <i class="fa fa-search"></i> Buscar
                                 </button>
                             </div>
@@ -161,6 +161,7 @@
                                 <th scope="col">Estado</th>
                                 <th scope="col">Identificacion Docente</th>
                                 <th scope="col">Nombre Docente</th>
+                                <th scope="col">Apellido Docente</th>
                                 <th scope="col">Categoria</th>
                                 <th scope="col">Fecha Inicial</th>
                                 <th scope="col">Fecha Final</th>
@@ -175,6 +176,7 @@
                                 <td v-text="asignatura.state"></td>
                                 <td v-text="asignatura.idTeacher"></td>
                                 <td v-text="asignatura.nameTeacher"></td>
+                                <td v-text="asignatura.surnamesTeacher"></td>
                                 <td v-text="asignatura.nameCategory"></td>
                                 <td v-text="asignatura.initDate"></td>
                                 <td v-text="asignatura.endDate"></td>
@@ -241,7 +243,7 @@ export default {
             arrayAsignaturas: [],
             arrayDocentes : [],
             arrayCategory : [],
-            criterio: "id",
+            criterio: "subjects.name",
             buscar: "",
             errores: [],
             asignatura: {
@@ -393,9 +395,8 @@ export default {
                             this.asignatura.id = data["id"];
                             this.asignatura.name = data["name"];
                             this.asignatura.description = data["description"];
-                            this.asignatura.numberStudents =  data["numberStudents"];
-                            this.asignatura.state =  data["state"];
-                            this.asignatura.idTeacher =  data["idTeacher"];
+                            this.asignatura.id_teacher =  data["idTeacher"];
+                            console.log(data);
                             this.asignatura.idCategory = data["idCategory"];
                             this.asignatura.initDate = data["initDate"];
                             this.asignatura.endDate =  data["endDate"];
@@ -421,9 +422,12 @@ export default {
             let me = this;
             axios
                 .post("/registerSubject", {
-                    id: this.asignatura.id,
                     name: this.asignatura.name,
-                    description: this.asignatura.description
+                    description: this.asignatura.description,
+                    id_teacher: this.asignatura.idTeacher,
+                    id_category_subject: this.asignatura.idCategory,
+                    initial_date: this.asignatura.initDate,
+                    end_date: this.asignatura.endDate
                 })
                 .then(function (response) {
                     Swal.fire(

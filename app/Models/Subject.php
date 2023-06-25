@@ -12,6 +12,6 @@ class Subject extends Model
 
 
     protected $fillable = [
-        'id', 'name', 'description'
+        'id', 'name', 'description','number_registered','status','initial_date','end_date'
     ];
 }
