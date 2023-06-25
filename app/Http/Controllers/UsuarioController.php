@@ -65,7 +65,7 @@ class UsuarioController extends Controller
         $user->names = $request->names;
         $user->surnames = $request->surnames;
         $user->email = $request->email;
-        $user->password = bcrypt($request->id);
+        $user->password = bcrypt($request->identification);
         $user->phone = $request->phone;
         $user->status = true; //1 Es activo 
         $user->id_category = $request->id_category;
