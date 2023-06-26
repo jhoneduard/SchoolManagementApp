@@ -39,16 +39,25 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         @if(Auth::check())
-                        <!---Administrador-->
-                        @if(Auth::user()->id_category == 1)
-                        <li @click="menu=1" class="nav-item active">
-                            <a class="nav-link text-white" href="#"> <i class="fas fa-user-graduate"></i> Usuarios</a>
-                        </li>
+                            <!---Administrador-->
+                            @if(Auth::user()->id_category == 1)
+                            <li @click="menu=1" class="nav-item active">
+                                <a class="nav-link text-white" href="#"> <i class="fas fa-user-graduate"></i> Usuarios</a>
+                            </li>
 
-                        <li @click="menu=2" class="nav-item active">
-                            <a class="nav-link text-white" href="#"> <i class="fa fa-book"></i></i>Cursos</a>
-                        </li>
-                        @endif
+                            <li @click="menu=2" class="nav-item active">
+                                <a class="nav-link text-white" href="#"> <i class="fa fa-book"></i></i>Cursos</a>
+                            </li>
+                            @endif
+                            <!---END Administrador-->
+
+                            @if(Auth::user()->id_category == 2)
+                            <!--- Estudiantes --->
+                            <li @click="menu=3" class="nav-item active">
+                                <a class="nav-link text-white" href="#"> <i class="fa fa-book"></i></i>Inscripcion de cursos</a>
+                            </li>
+                            <!--- END Estudiantes --->
+                            @endif
                         @endif
                     </ul>
                     <!-- Right Side Of Navbar -->
@@ -78,23 +87,36 @@
 
         <main class="py-4">
             @if(Auth::check())
-            <!---Administrador-->
-            @if(Auth::user()->id_category == 1)
-            <template v-if="menu==1">
-                <usuarios></usuarios>
-            </template>
+                <!---Administrador-->
+                @if(Auth::user()->id_category == 1)
+                <template v-if="menu==1">
+                    <usuarios></usuarios>
+                </template>
 
-            <template v-if="menu==2">
-                <asignaturas></asignaturas>
-            </template>
-            @endif
+                <template v-if="menu==2">
+                    <asignaturas></asignaturas>
+                </template>
+                @endif
+                <!---END Administrador-->
+
+                @if(Auth::user()->id_category == 2)
+                <!--- Estudiantes ---->
+                <template v-if="menu==3">
+                    <course-registration></course-registration>
+                </template>
+
+                <template v-if="menu==4">
+                    <course-recommendations></course-recommendations>
+                </template>
+                <!----- End estudiantes ----->
+                @endif
             @endif
         </main>
     </div>
 
     <div class="footer footer-sm-md-lg-xl">
         <p class="bg-info text-white">
-            <strong class="text-center">© Copyright <?php echo date("Y"); ?> Sistema de gestion de notas </strong>
+            <strong class="text-center">© Copyright <?php echo date("Y"); ?> SchoolManagementApp </strong>
         </p>
     </div>
 
