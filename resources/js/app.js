@@ -21,6 +21,9 @@ window.Vue = require('vue').default;
 
 Vue.component('usuarios', require('./components/Usuarios.vue').default);
 Vue.component('asignaturas', require('./components/Asignatura.vue').default);
+Vue.component('course-registration', require('./components/CourseRegistration.vue').default);
+Vue.component('course-recommendations', require('./components/CourseRecommendations.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
