@@ -11,7 +11,6 @@
                                 <option value="users.names">Nombre del docente</option>
                                 <option value="users.surnames">Apellido del docente</option>
                                 <option value="category_subject.name">Categoria del curso</option>
-
                             </select>
                             <input type="text" v-model="buscar" @keyup.enter="
                                 listarCursosRecomendados(1, buscar, criterio)
@@ -27,12 +26,14 @@
                 </div>
             </div>
 
+
             <!-- Tabla de cursos disponibles-->
             <div class="container">
                 <div class="table-responsive">
                     <table class="table">
                         <thead class="thead-light">
                             <tr>
+                                <th scope="col"></th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
@@ -43,21 +44,22 @@
                                 <td>
                                     <div>
                                         <div class="row">
-                                            <strong v-text="curso.name"></strong>
+                                            <strong v-text="curso.nameSubject"></strong>
                                         </div>
-                                        <div class="row">
-                                            <strong>Docente : <p v-text="curso.nameTeacher"></p> </strong>
-                                        </div>
+                                        <strong>Docente : </strong> <strong v-text="curso.nameTeacher"></strong>
                                     </div>
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-primary btn-circle btn-xl">
-                                        <p v-text="curso.nameCourse"></p>
+                                        <p v-text="curso.nameCategory"></p>
                                     </button>
                                 </td>
                                 <td>
+                                    # estudiantes registrados <strong v-text="curso.quantityStudents"></strong>
+                                </td>
+                                <td>
                                     <button type="button" class="btn btn-info btn-circle btn-xl text-white"
-                                        @click="registrationCourse()">
+                                        @click="registrationCourse(curso.id)">
                                         <i class="fas fa-sign-in-alt"></i> Inscribirse
                                     </button>
                                 </td>
@@ -67,6 +69,7 @@
                 </div>
             </div>
             <!-- END Tabla de cursos disponibles-->
+
 
             <!-- Paginacion-->
             <nav class="container centerPagination my-3">
@@ -104,6 +107,7 @@
 
 
 <script>
+import Swal from "sweetalert2";
 export default {
     data() {
         return {
@@ -138,7 +142,7 @@ export default {
                 .get(url)
                 .then(function (response) {
                     var respuesta = response.data;
-                    me.arrayCoursesRecommendations = respuesta.courses_recommendations;
+                    me.arrayCoursesRecommendations = respuesta.courses_recommendations.data;
                     me.pagination = respuesta.pagination;
                 })
                 .catch(function (error) {
@@ -152,11 +156,11 @@ export default {
             //Envia la petición para visualizar la data de esa página
             me.listarCursosRecomendados(page, buscar, criterio);
         },
-        registrationCourse() {
+        registrationCourse(idSubject) {
             let me = this;
             axios
-                .post("/registration-course", {
-                    id_subject: this.asignatura.id_subject
+                .post('/registration-course', {
+                    id_subject: idSubject
                 })
                 .then(function (response) {
                     Swal.fire(
@@ -169,7 +173,8 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
-        }
+            idSubject = null;
+        },
     },
     computed: {
         isActived: function () {

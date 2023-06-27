@@ -174,7 +174,7 @@
                                 <td v-text="asignatura.description"></td>
                                 <td v-text="asignatura.numberStudents"></td>
                                 <td v-text="asignatura.state"></td>
-                                <td v-text="asignatura.idTeacher"></td>
+                                <td v-text="asignatura.identificationTeacher"></td>
                                 <td v-text="asignatura.nameTeacher"></td>
                                 <td v-text="asignatura.surnamesTeacher"></td>
                                 <td v-text="asignatura.nameCategory"></td>
@@ -252,10 +252,10 @@ export default {
                 description: '',
                 numberStudents : 0,
                 state : '',
-                idTeacher : 0,
-                idCategory : 0,
-                initDate : '',
-                endDate : ''
+                idTeacher : null,
+                idCategory : null,
+                initDate : null,
+                endDate : null
             },
             pagination: {
                 total: 0,
@@ -378,8 +378,8 @@ export default {
                             this.asignatura.description = '';
                             this.asignatura.numberStudents = 0;
                             this.asignatura.state = '';
-                            this.asignatura.idTeacher = 0;
-                            this.asignatura.idCategory = '';
+                            this.asignatura.idTeacher = null;
+                            this.asignatura.idCategory = null;
                             this.asignatura.initDate = null;
                             this.asignatura.endDate = null;
                             this.arrayDocentes = [];
@@ -395,8 +395,7 @@ export default {
                             this.asignatura.id = data["id"];
                             this.asignatura.name = data["name"];
                             this.asignatura.description = data["description"];
-                            this.asignatura.id_teacher =  data["idTeacher"];
-                            console.log(data);
+                            this.asignatura.idTeacher =  data["idTeacher"];
                             this.asignatura.idCategory = data["idCategory"];
                             this.asignatura.initDate = data["initDate"];
                             this.asignatura.endDate =  data["endDate"];
@@ -415,6 +414,13 @@ export default {
             this.asignatura.id = 0;
             this.asignatura.name = '';
             this.asignatura.description = '';
+            this.asignatura.numberStudents = 0;
+            this.asignatura.state = '';
+            this.asignatura.idTeacher = null;
+            this.asignatura.idCategory = null;
+            this.asignatura.initDate = null;
+            this.asignatura.endDate = null;
+            this.asignatura
             this.errores = [];
             this.tipoAccion = 0;
         },
@@ -456,6 +462,8 @@ export default {
                     id: this.asignatura.id,
                     name: this.asignatura.name,
                     description: this.asignatura.description,
+                    initDate: this.asignatura.initDate,
+                    endDate : this.asignatura.endDate,
                     _method: 'put'
                 })
                 .then(function (response) {

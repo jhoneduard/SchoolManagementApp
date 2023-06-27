@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AsignaturaController;
+use App\Http\Controllers\RegistrationCourseController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Route;
 
@@ -45,3 +46,8 @@ Route::get('/select-teachers', [AsignaturaController::class, 'getTeachers']);
 
 // API de categoria de Categorias de Cursos
 Route::get('/select-category-subjects', [AsignaturaController::class, 'getCategory']);
+
+// API de listar cursos disponibles
+Route::get('/course-available', [RegistrationCourseController::class, 'getCourses']);
+Route::get('/course-recommendations', [RegistrationCourseController::class, 'courseRecommendations']);
+Route::post('/registration-course', [RegistrationCourseController::class, 'registrationCourse']);

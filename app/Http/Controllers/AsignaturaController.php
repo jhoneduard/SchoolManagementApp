@@ -19,14 +19,22 @@ class AsignaturaController extends Controller
 
         if ($buscar == '') {
             $asignaturas =  DB::table('subjects')
-                ->select('subjects.id', 'subjects.name', 'subjects.description','subjects.number_registered AS numberStudents','subjects.status AS state','subjects.initial_date AS initDate','end_date AS endDate', 'users.identification AS idTeacher', 'users.names AS nameTeacher', 'users.surnames AS surnamesTeacher','category_subject.name AS nameCategory','category_subject.id AS idCategory')
+                ->select('subjects.id', 'subjects.name', 'subjects.description','subjects.number_registered AS numberStudents',
+                'subjects.status AS state', 
+                DB::raw("DATE_FORMAT(subjects.initial_date, '%Y-%m-%d') AS initDate") , DB::raw("DATE_FORMAT(end_date, '%Y-%m-%d') AS endDate") ,
+                'users.id AS idTeacher', 'users.identification AS identificationTeacher', 'users.names AS nameTeacher', 'users.surnames AS surnamesTeacher',
+                 'category_subject.name AS nameCategory','category_subject.id AS idCategory')
                 ->join('users', 'users.id', '=', 'subjects.id_teacher')
                 ->join('category_subject', 'category_subject.id', '=', 'subjects.id_category_subject')
                 ->orderBy('subjects.id', 'desc')
                 ->paginate(3);
         } else {
             $asignaturas =  DB::table('subjects')
-            ->select('subjects.id', 'subjects.name', 'subjects.description','subjects.number_registered AS numberStudents','subjects.status AS state','subjects.initial_date AS initDate','end_date AS endDate', 'users.identification AS idTeacher', 'users.names AS nameTeacher', 'users.surnames AS surnamesTeacher','category_subject.name AS nameCategory','category_subject.id AS idCategory')
+            ->select('subjects.id', 'subjects.name', 'subjects.description','subjects.number_registered AS numberStudents',
+            'subjects.status AS state',
+            DB::raw("DATE_FORMAT(subjects.initial_date, '%Y-%m-%d') AS initDate") , DB::raw("DATE_FORMAT(end_date, '%Y-%m-%d') AS endDate"),
+             'users.identification AS idTeacher', 'users.names AS nameTeacher', 'users.surnames AS surnamesTeacher',
+             'category_subject.name AS nameCategory','category_subject.id AS idCategory')
             ->join('users', 'users.id', '=', 'subjects.id_teacher')
             ->join('category_subject', 'category_subject.id', '=', 'subjects.id_category_subject')
             ->orderBy('subjects.id', 'desc')
@@ -68,6 +76,8 @@ class AsignaturaController extends Controller
         $subject = Subject::findOrFail($request->id);
         $subject->name = $request->name;
         $subject->description = $request->description;
+        $subject->initial_date = $request->initDate;
+        $subject->end_date = $request->endDate;
         $subject->save();
     }
 
