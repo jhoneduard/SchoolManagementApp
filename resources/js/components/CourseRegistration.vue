@@ -49,21 +49,19 @@
                                 <td>
                                     <div>
                                         <div class="row">
-                                            <strong v-text="curso.name"></strong>
+                                            <strong v-text="curso.nameSubject"></strong>
                                         </div>
-                                        <div class="row">
-                                            <strong>Docente : <p v-text="curso.nameTeacher"></p> </strong>
-                                        </div>
+                                            <strong>Docente :  </strong> <strong v-text="curso.nameTeacher"></strong>
                                     </div>
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-primary btn-circle btn-xl">
-                                        <p v-text="curso.nameCourse"></p>
+                                        <p v-text="curso.nameCategory"></p>
                                     </button>
                                 </td>
                                 <td>
                                     <button type="button" class="btn btn-info btn-circle btn-xl text-white"
-                                        @click="registrationCourse()">
+                                        @click="registrationCourse(curso.id)">
                                         <i class="fas fa-sign-in-alt"></i> Inscribirse
                                     </button>
                                 </td>
@@ -110,6 +108,8 @@
 
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
     data() {
         return {
@@ -144,7 +144,7 @@ export default {
                 .get(url)
                 .then(function (response) {
                     var respuesta = response.data;
-                    me.arrayCoursesAvailable = respuesta.courses_available;
+                    me.arrayCoursesAvailable = respuesta.courses_available.data;
                     me.pagination = respuesta.pagination;
                 })
                 .catch(function (error) {
@@ -158,11 +158,11 @@ export default {
             //Envia la petición para visualizar la data de esa página
             me.listarCursosDisponibles(page, buscar, criterio);
         },
-        registrationCourse() {
+        registrationCourse(idSubject) {
             let me = this;
             axios
                 .post('/registration-course', {
-                    id_subject: this.asignatura.id_subject
+                    id_subject: idSubject
                 })
                 .then(function (response) {
                     Swal.fire(
@@ -175,6 +175,7 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
+                idSubject = null;
         },
         seeRecommendedCourses() {
             this.$root.menu = 4;
