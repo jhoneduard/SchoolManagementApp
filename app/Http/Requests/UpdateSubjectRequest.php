@@ -26,6 +26,8 @@ class UpdateSubjectRequest extends FormRequest
         return [
             'name' => 'required|min:3|max:90',
             'description' => 'required|min:3|max:100',
+            'initDate' => 'required',
+            'endDate' => 'required'
         ];
     }
 
@@ -40,6 +42,11 @@ class UpdateSubjectRequest extends FormRequest
             'description.required' => 'El apellido es requerido',
             'description.min' => 'El apellido debe tener como minimo 3 caracteres',
             'description.max' => 'El apellido debe tener como maximo 100 caracteres',
+
+            // init date
+            'initDate.required' => 'La fecha inicial es requerida',
+            // end date
+            'endDate.required' => 'La fecha final es requerida'
         ];
     }
 }
