@@ -12,7 +12,7 @@ class AsignaturaController extends Controller
 {
     public function geSubjects(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
         $buscar = $request->buscar;
 
         $criterio = $request->criterio;
@@ -57,7 +57,7 @@ class AsignaturaController extends Controller
 
     public function registerSubject(CreateSubjectRequest $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
         $subject = new Subject();
         $subject->name = $request->name;
         $subject->description = $request->description;
@@ -72,7 +72,7 @@ class AsignaturaController extends Controller
 
     public function updateSubject(UpdateSubjectRequest $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
         $subject = Subject::findOrFail($request->id);
         $subject->name = $request->name;
         $subject->description = $request->description;
@@ -89,7 +89,7 @@ class AsignaturaController extends Controller
 
     public function getTeachers(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
         $teachers = DB::table('users')
             ->select('id', DB::raw("CONCAT(names,' ',surnames) AS names"))
             ->where('id_category', '=', 3)
@@ -99,7 +99,7 @@ class AsignaturaController extends Controller
 
     public function getCategory(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+       // if (!$request->ajax()) return redirect('/');
         $categorias = DB::table('category_subject')
             ->select('id', 'name')
             ->get();

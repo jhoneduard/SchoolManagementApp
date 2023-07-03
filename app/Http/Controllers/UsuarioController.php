@@ -13,22 +13,22 @@ class UsuarioController extends Controller
 
     public function getUsers(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
 
-        $buscar = $request->buscar; 
+        $buscar = $request->buscar;
 
         $criterio = $request->criterio;
 
         if ($buscar == '') {
             $usuarios =  DB::table('users')
-                ->select('users.id','users.identification', 'users.document_type', 'users.names', 'users.surnames', 'users.email', 'users.status', 'users.id_category', 'users.phone', 'category_user.name AS nombreCategoria', 'users.id_category AS idCategoria')
+                ->select('users.id', 'users.identification', 'users.document_type', 'users.names', 'users.surnames', 'users.email', 'users.status', 'users.id_category', 'users.phone', 'category_user.name AS nombreCategoria', 'users.id_category AS idCategoria')
                 ->join('category_user', 'category_user.id', '=', 'users.id_category')
                 ->where('users.id', '!=', auth()->id())
                 ->orderBy('users.id', 'desc')
                 ->paginate(3);
         } else {
             $usuarios =  DB::table('users')
-                ->select('users.id','users.identification', 'users.document_type', 'users.names', 'users.surnames', 'users.email', 'users.status', 'users.id_category', 'users.phone', 'category_user.name AS nombreCategoria', 'users.id_category AS idCategoria')
+                ->select('users.id', 'users.identification', 'users.document_type', 'users.names', 'users.surnames', 'users.email', 'users.status', 'users.id_category', 'users.phone', 'category_user.name AS nombreCategoria', 'users.id_category AS idCategoria')
                 ->join('category_user', 'category_user.id', '=', 'users.id_category')
                 ->orderBy('users.id', 'desc')
                 ->where($criterio, 'like', '%' . $buscar . '%')
@@ -50,7 +50,7 @@ class UsuarioController extends Controller
 
     public function getCategory(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        // if (!$request->ajax()) return redirect('/');
         $categorias = DB::table('category_user')
             ->select('id', 'name')
             ->get();
@@ -80,7 +80,7 @@ class UsuarioController extends Controller
 
     public function chanceState(Request $request, $id)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
         $user = User::findOrFail($id);
         $user->status = $request->accion;
         $user->save();
@@ -88,7 +88,7 @@ class UsuarioController extends Controller
 
     public function updateUser(UpdateUserRequest $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
         $client = User::findOrFail($request->id);
         $client->names = $request->names;
         $client->surnames = $request->surnames;
