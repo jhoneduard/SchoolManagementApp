@@ -14,7 +14,7 @@ class RegistrationCourseController extends Controller
 {
     public function getCourses(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
         $buscar = $request->buscar;
         $criterio = $request->criterio;
 
@@ -67,7 +67,7 @@ class RegistrationCourseController extends Controller
 
     public function courseRecommendations(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
         $buscar = $request->buscar;
         $criterio = $request->criterio;
 
@@ -122,7 +122,7 @@ class RegistrationCourseController extends Controller
 
     public function registrationCourse(Request $request)
     {
-        if (!$request->ajax()) return redirect('/');
+        //if (!$request->ajax()) return redirect('/');
         // Se registrara el curso seleccionado en la tabla de registration_subjects
         $subject = new RegistrationSubject();
         $subject->id_subject = $request->id_subject;
